@@ -1,11 +1,9 @@
 package com.rizkyrahman.restfull.controller;
 
-
-import com.rizkyrahman.restfull.dto.request.ProductSearchDto;
 import com.rizkyrahman.restfull.dto.respon.ControllerResponse;
 import com.rizkyrahman.restfull.dto.respon.PageResponWrapper;
-import com.rizkyrahman.restfull.entity.Product;
-import com.rizkyrahman.restfull.service.implement.ProductServiceImpl;
+import com.rizkyrahman.restfull.entity.Customer;
+import com.rizkyrahman.restfull.service.implement.CustomerServiceImpl;
 import com.rizkyrahman.restfull.util.constans.ApiUrlConstans;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,22 +14,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(ApiUrlConstans.PRODUCT)
-public class ProductController {
+@RequestMapping(ApiUrlConstans.CUSTOMER)
+public class CustomerController {
+    private CustomerServiceImpl customerService;
 
-    private ProductServiceImpl productService;
-
-    public ProductController(ProductServiceImpl productService) {
-        this.productService = productService;
+    public CustomerController(CustomerServiceImpl customerService) {
+        this.customerService = customerService;
     }
 
     @PostMapping()
-    public ResponseEntity<?> createNewProduct(@RequestBody Product product) {
-        Product productEntity = productService.create(product);
-        ControllerResponse<Product> response = ControllerResponse.<Product>builder()
+    public ResponseEntity<?> createNewCustomer(@RequestBody Customer customer) {
+        Customer customers = customerService.create(customer);
+        ControllerResponse<Customer> response = ControllerResponse.<Customer>builder()
                 .status(HttpStatus.CREATED.getReasonPhrase())
                 .message(ApiUrlConstans.CREATE)
-                .data(productEntity)
+                .data(customers)
                 .build();
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -42,54 +39,57 @@ public class ProductController {
             (@RequestParam(name = "page", defaultValue = "0") Integer page,
              @RequestParam(name = "size", defaultValue = "5") Integer size,
              @RequestParam(name = "sort-by", defaultValue = "name") String sortBy,
-             @RequestParam(name = "direction", defaultValue = "ASC") String direction,
-             @RequestParam(name = "name",required = false) String name,
-             @RequestParam(name = "price",required = false) Integer price,
-             @RequestParam(name = "stock",required = false) Integer stock
-            ){
-
-        ProductSearchDto productSearchDto = new ProductSearchDto(name,stock,price);
+             @RequestParam(name = "direction", defaultValue = "ASC") String direction
+            ) {
         Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Product> productEntityPage = productService.pageProduct(pageable, productSearchDto);
-        ControllerResponse<?> response = ControllerResponse.<PageResponWrapper<Product>>builder()
+        Page<Customer> customerPage = customerService.pageCustomer(pageable);
+        ControllerResponse<?> response = ControllerResponse.<PageResponWrapper<Customer>>builder()
                 .status(HttpStatus.OK.getReasonPhrase())
                 .message(ApiUrlConstans.GETDATA)
-                .data(new PageResponWrapper<>(productEntityPage))
+                .data(new PageResponWrapper<>(customerPage))
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> findById(@PathVariable(name = "id") String id) {
-        Product productEntity = productService.getById(id);
-
-        ControllerResponse<Product> response = ControllerResponse.<Product>builder()
+    public ResponseEntity<?> findById(@PathVariable(name = "id") String name) {
+        Customer customer = customerService.getById(name);
+        if (customer == null) {
+            ControllerResponse<Customer> response = ControllerResponse.<Customer>builder()
+                    .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                    .message(ApiUrlConstans.NODATA)
+                    .data(null)
+                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        ControllerResponse<Customer> response = ControllerResponse.<Customer>builder()
                 .status(HttpStatus.OK.getReasonPhrase())
                 .message(ApiUrlConstans.GETDATA)
-                .data(productEntity)
+                .data(customer)
                 .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
+
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable(name = "id") String id) {
-        Product deletedProduct = productService.delete(id);
+    public ResponseEntity<?> delete(@PathVariable(name = "name") String name) {
+        Customer customer = customerService.delete(name);
 
-        if (deletedProduct == null) {
-            ControllerResponse<Product> response = ControllerResponse.<Product>builder()
+        if (customer == null) {
+            ControllerResponse<Customer> response = ControllerResponse.<Customer>builder()
                     .status(HttpStatus.BAD_REQUEST.getReasonPhrase())
-                    .message("Failed")
+                    .message(ApiUrlConstans.NODATA)
                     .data(null)
                     .build();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
-        ControllerResponse<Product> response = ControllerResponse.<Product>builder()
+        ControllerResponse<Customer> response = ControllerResponse.<Customer>builder()
                 .status(HttpStatus.OK.getReasonPhrase())
                 .message(ApiUrlConstans.DELLETE)
-                .data(deletedProduct)
+                .data(customer)
                 .build();
 
 
@@ -97,12 +97,12 @@ public class ProductController {
     }
 
     @PutMapping("")
-    public ResponseEntity<?> updateProduct(@RequestBody Product product) {
-        Product updatedProduct = productService.update(product);
-        ControllerResponse<Product> response = ControllerResponse.<Product>builder()
+    public ResponseEntity<?> update(@RequestBody Customer customer) {
+        Customer customers = customerService.update(customer);
+        ControllerResponse<Customer> response = ControllerResponse.<Customer>builder()
                 .status(HttpStatus.OK.getReasonPhrase())
                 .message(ApiUrlConstans.UPDATE)
-                .data(updatedProduct)
+                .data(customers)
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(response);
 

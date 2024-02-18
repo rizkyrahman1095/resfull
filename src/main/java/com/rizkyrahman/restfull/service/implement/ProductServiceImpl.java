@@ -1,10 +1,13 @@
 package com.rizkyrahman.restfull.service.implement;
 
-import com.rizkyrahman.restfull.entity.ProductEntity;
+import com.rizkyrahman.restfull.dto.request.ProductSearchDto;
+import com.rizkyrahman.restfull.entity.Product;
 import com.rizkyrahman.restfull.repo.ProductRepo;
 import com.rizkyrahman.restfull.service.ProductService;
+import com.rizkyrahman.restfull.specification.ProductSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,40 +23,41 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductEntity create(ProductEntity product) {
+    public Product create(Product product) {
         return productRepo.save(product);
     }
 
     @Override
-    public List<ProductEntity> getAll() {
+    public List<Product> getAll() {
         return productRepo.findAll();
     }
 
     @Override
-    public Optional<ProductEntity> getById(String id) {
-        return Optional.ofNullable(productRepo.findById(id).get());
+    public Product getById(String id) {
+        Optional<Product> productEntity = productRepo.findById(id);
+        return productEntity.orElse(null);
     }
 
     @Override
-    public ProductEntity update(ProductEntity product) {
-//        delete(product.getId());
+    public Product update(Product product) {
         return productRepo.save(product);
 
     }
 
     @Override
-    public void delete(String id) {
-        productRepo.deleteById(id);
-
+    public Product delete(String id) {
+        Optional<Product> productEntity = productRepo.findById(id);
+        if (productEntity.isPresent()) {
+            productRepo.deleteById(id);
+            return productEntity.get();
+        }
+        return null;
     }
 
     @Override
-    public Page<ProductEntity> pageProduct(Pageable pageable) {
-        return productRepo.findAll(pageable);
+    public Page<Product> pageProduct(Pageable pageable, ProductSearchDto productSearchDto) {
+        Specification<Product> productSpecification = ProductSpecification.getProductSpecification(productSearchDto);
+        return productRepo.findAll(productSpecification,pageable);
     }
 
-    public List<ProductEntity> findByName(String name){
-       return productRepo.findProductEntitiesByNameLike(name);
-
-    }
 }

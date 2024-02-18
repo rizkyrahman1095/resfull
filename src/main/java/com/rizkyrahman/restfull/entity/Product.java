@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "store_product")
-public class ProductEntity {
+public class Product {
         @Id
         @GeneratedValue(strategy = GenerationType.UUID)
         private String id;

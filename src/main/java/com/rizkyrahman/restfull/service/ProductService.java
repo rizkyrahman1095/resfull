@@ -1,24 +1,20 @@
 package com.rizkyrahman.restfull.service;
 
-import com.rizkyrahman.restfull.entity.ProductEntity;
-import com.rizkyrahman.restfull.repo.ProductRepo;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import com.rizkyrahman.restfull.dto.request.ProductSearchDto;
+import com.rizkyrahman.restfull.entity.Product;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ProductService {
 
-        ProductEntity create(ProductEntity product);
-        List<ProductEntity> getAll();
-        Optional<ProductEntity> getById(String id);
-        ProductEntity update(ProductEntity product);
-        void delete(String id);
-
-        Page<ProductEntity> pageProduct(Pageable pageable);
+        Product create(Product product);
+        List<Product> getAll();
+        Product getById(String id);
+        Product update(Product product);
+        Product delete(String id);
+        Page<Product> pageProduct(Pageable pageable,ProductSearchDto productSearchDto);
 
 
 }

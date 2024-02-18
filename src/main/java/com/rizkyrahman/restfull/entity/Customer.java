@@ -16,6 +16,7 @@ import java.util.Date;
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
     private String name;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
