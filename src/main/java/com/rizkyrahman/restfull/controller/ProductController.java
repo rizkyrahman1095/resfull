@@ -43,12 +43,12 @@ public class ProductController {
              @RequestParam(name = "size", defaultValue = "5") Integer size,
              @RequestParam(name = "sort-by", defaultValue = "name") String sortBy,
              @RequestParam(name = "direction", defaultValue = "ASC") String direction,
-             @RequestParam(name = "name",required = false) String name,
-             @RequestParam(name = "price",required = false) Integer price,
-             @RequestParam(name = "stock",required = false) Integer stock
-            ){
+             @RequestParam(name = "name", required = false) String name,
+             @RequestParam(name = "price", required = false) Integer price,
+             @RequestParam(name = "stock", required = false) Integer stock
+            ) {
 
-        ProductSearchDto productSearchDto = new ProductSearchDto(name,stock,price);
+        ProductSearchDto productSearchDto = new ProductSearchDto(name, stock, price);
         Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Product> productEntityPage = productService.pageProduct(pageable, productSearchDto);

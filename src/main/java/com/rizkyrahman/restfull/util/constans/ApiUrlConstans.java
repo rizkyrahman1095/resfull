@@ -10,5 +10,8 @@ public class ApiUrlConstans {
     public static final String GETDATA = "Succes get data";
     public static final String NODATA = "please insert correct id";
 
+    public static final String PURCHASE = "/purchases";
+    public static final String PURCHASEDETAIL = "/purchase-detail";
+
 
 }

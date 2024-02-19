@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "store_product")
+@Table(name = "m_product")
 public class Product {
         @Id
         @GeneratedValue(strategy = GenerationType.UUID)

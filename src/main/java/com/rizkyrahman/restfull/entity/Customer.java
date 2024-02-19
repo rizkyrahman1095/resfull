@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "store_customer")
+@Table(name = "m_customer")
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
