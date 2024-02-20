@@ -27,7 +27,7 @@ public class Purchase {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    @JsonIgnoreProperties("purchaseList")
+//    @JsonIgnoreProperties("purchaseList")
     @OneToMany(mappedBy = "purchase")
     private List<PurchaseDetail> purchaseList = new ArrayList<>();
 

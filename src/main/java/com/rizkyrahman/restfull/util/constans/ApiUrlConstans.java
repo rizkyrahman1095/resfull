@@ -11,7 +11,11 @@ public class ApiUrlConstans {
     public static final String NODATA = "please insert correct id";
 
     public static final String PURCHASE = "/purchases";
-    public static final String PURCHASEDETAIL = "/purchase-detail";
+    public static final String PURCHAS_EDETAIL = "/purchase-detail";
+    public static final String CUSTOMER_NOT_FOUND = "Customer not found";
+    public static final String PRODUCTS_NOT_FOUND = "The product out of stock";
+    public static final String FAIL_PURCHASE = "Failed to purchase please try again later";
+    public static final String SUCCESS_PURCHASE="the transaction success thank";
 
 
 }

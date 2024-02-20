@@ -21,7 +21,7 @@ public class PurchaseController {
     }
 
     @PostMapping
-    public Purchase createPurchase(@RequestBody Purchase purchase){
+    public ResponseEntity<?> createPurchase(@RequestBody Purchase purchase){
          return purchaseService.savePurchase(purchase);
 
     }
