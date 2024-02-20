@@ -1,7 +1,6 @@
 package com.rizkyrahman.restfull.service.implement;
 
 import com.rizkyrahman.restfull.entity.Customer;
-import com.rizkyrahman.restfull.entity.Product;
 import com.rizkyrahman.restfull.repo.CustomerRepo;
 import com.rizkyrahman.restfull.service.CustomerService;
 import org.springframework.data.domain.Page;
